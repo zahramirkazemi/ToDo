@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import TaskInput from "./components/task-input";
 import { Task } from "./types";
+import TasksList from "./components/task-list";
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -16,6 +17,11 @@ const App: React.FC = () => {
     setTasks(newTasks);
   };
 
+  const removeTask = (id: string): void => {
+    const removedTasks = [...tasks].filter((task) => task.id !== id);
+    setTasks(removedTasks);
+  };
+
   return (
     <div className="flex justify-center lg:mt-10 mt-6 h-full w-full">
       <div className="h-5/6 w-11/12 border-2 border-tertiary rounded-md text-center lg:p-8 p-4">
@@ -23,6 +29,7 @@ const App: React.FC = () => {
           Clear your mind, tackle your tasks!
         </h1>
         <TaskInput addTask={addTask} />
+        <TasksList tasks={tasks} removeTask={removeTask} />
       </div>
     </div>
   );
