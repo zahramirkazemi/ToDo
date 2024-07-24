@@ -1,29 +1,37 @@
-import { Task as TaskType, TaskState } from "../types";
+import { useDraggable } from "@dnd-kit/core";
+import { Task as TaskType } from "../types";
 
 interface TaskProps {
   task: TaskType;
   removeTask: (id: string) => void;
+  grabbed?: boolean;
 }
 
-const Task: React.FC<TaskProps> = ({ task, removeTask }: TaskProps) => {
+const Task: React.FC<TaskProps> = ({
+  task,
+  grabbed,
+  removeTask,
+}: TaskProps) => {
+  const { attributes, listeners, setNodeRef } = useDraggable({
+    id: task.id,
+  });
+
   return (
-    <div className="relative my-4">
-      <input
-        type="checkbox"
-        className="peer absolute opacity-0 w-0 h-0 cursor-pointer"
-        id={task.id}
-        checked={task.state === TaskState.Done}
-      />
-      <span className="absolute w-4 h-4 sm:w-5 sm:h-5 border-2 border-secondary rounded-md top-0.5 left-4 checkmark peer-checked:after:block peer-checked:bg-secondary after:hidden after:absolute cursor-pointer after:left-1.5 after:w-1.5 after:h-3.5 after:border-white after:border-b-2 after:border-r-2 after:rotate-45"></span>
+    <div className="relative my-2 bg-tertiary rounded-md">
       <label
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
         htmlFor={task.id}
-        className="block cursor-pointer select-none text-white text-left pl-11 pr-5 sm:text-sm text-xs peer-checked:text-dipricate peer-checked:line-through peer-checked:decoration-secondary peer-checked:decoration-2"
+        className={`block ${
+          grabbed ? "cursor-grabbing" : "cursor-pointer"
+        } select-none text-white text-left p-3 pr-10 sm:text-sm text-xs peer-checked:text-dipricate peer-checked:line-through peer-checked:decoration-secondary peer-checked:decoration-2`}
       >
         {task.title}
       </label>
       <button
         onClick={() => removeTask(task.id)}
-        className="absolute -top-px right-4 text-secondary sm:text-sm text-xs"
+        className="absolute top-3 right-4 text-secondary sm:text-sm text-xs"
       >
         X
       </button>

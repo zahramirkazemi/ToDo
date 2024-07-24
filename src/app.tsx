@@ -29,7 +29,7 @@ const App: React.FC = () => {
           Clear your mind, tackle your tasks!
         </h1>
         <TaskInput addTask={addTask} />
-        <TasksList tasks={tasks} removeTask={removeTask} />
+        <TasksList tasks={tasks} removeTask={removeTask} setTasks={setTasks} />
       </div>
     </div>
   );

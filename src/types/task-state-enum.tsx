@@ -1,6 +1,6 @@
 enum TaskState {
   ToDo = "to-do",
-  Inprogress = "inprogress",
+  Inprogress = "in-progress",
   Done = "done",
 }
 
