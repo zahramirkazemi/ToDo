@@ -11,9 +11,7 @@ const TaskInput: React.FC<TaskInputProps> = ({ addTask }: TaskInputProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void =>
     setInput(event.target.value);
 
-  const handleSubmit = (event: React.MouseEvent<HTMLElement>): void => {
-    event.preventDefault();
-
+  const handleSubmit = (): void => {
     addTask({
       id: Date.now().toString(),
       title: input,
@@ -23,10 +21,17 @@ const TaskInput: React.FC<TaskInputProps> = ({ addTask }: TaskInputProps) => {
     setInput("");
   };
 
+  const handleEnterClick = (event: React.KeyboardEvent<HTMLElement>): void => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="w-11/12 m-auto lg:mt-8 mt-4">
       <input
         onChange={handleChange}
+        onKeyUp={handleEnterClick}
         value={input}
         className="w-5/6 border border-secondary h-9 bg-primary text-white px-3 text-sm lg:text-xs rounded-l-md focus-visible:outline-none"
       ></input>
