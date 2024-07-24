@@ -17,16 +17,27 @@ import Task from "./task";
 
 interface TasksListProps {
   tasks: TaskType[];
-  removeTask: (id: string) => void;
   setTasks: Dispatch<SetStateAction<TaskType[]>>;
 }
 
 const TasksList: React.FC<TasksListProps> = ({
   tasks,
-  removeTask,
   setTasks,
 }: TasksListProps) => {
   const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
+  const sensors = useSensors(useSensor(PointerSensor));
+  const dropAnimation: DropAnimation = {
+    ...defaultDropAnimation,
+  };
+  const task = activeTaskId
+    ? tasks.find((task) => task.id === activeTaskId)
+    : null;
+
+  const removeTask = (id: string): void => {
+    const removedTasks = [...tasks].filter((task) => task.id !== id);
+    setTasks(removedTasks);
+  };
+
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     const newTasks = tasks.map((task) => {
       if (task.id === active.id) {
@@ -39,18 +50,9 @@ const TasksList: React.FC<TasksListProps> = ({
     setTasks([...newTasks]);
     setActiveTaskId(null);
   };
-  const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragStart = ({ active }: DragStartEvent) => {
+  const handleDragStart = ({ active }: DragStartEvent) =>
     setActiveTaskId(active.id as string);
-  };
-
-  const dropAnimation: DropAnimation = {
-    ...defaultDropAnimation,
-  };
-  const task = activeTaskId
-    ? tasks.find((task) => task.id === activeTaskId)
-    : null;
 
   return (
     <div className="flex flex-wrap gap-4 w-11/12 border-2 rounded-md border-tertiary lg:mt-8 mt-4 mx-auto p-4 justify-center">
