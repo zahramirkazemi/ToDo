@@ -8,7 +8,6 @@ ToDo List with drag and drop and progress state built with React and Typescript 
 
 - Create and delete tasks
 - Drag and Drop tasks to in-progress, todo and done state
-- Responsive design
 
 ## Getting Started
 
